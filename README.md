@@ -63,6 +63,7 @@ Aggregate data across multiple servers using Redis. Perfect for server networks 
       "Redis": {
         "Host": "redis.example.com",
         "Port": 6379,
+        "Username": "optional",
         "Password": "optional",
         "Database": 0,
         "UseTLS": false
@@ -81,7 +82,8 @@ Aggregate data across multiple servers using Redis. Perfect for server networks 
 | `Store.Type` | `"redis"` | Storage backend type (only `redis` supported) |
 | `Store.Redis.Host` | `"localhost"` | Redis server hostname |
 | `Store.Redis.Port` | `6379` | Redis server port |
-| `Store.Redis.Password` | `null` | Redis password (optional) |
+| `Store.Redis.Username` | `null` | Redis username for ACL auth (Redis 6+) |
+| `Store.Redis.Password` | `null` | Redis password |
 | `Store.Redis.Database` | `0` | Redis database number |
 | `Store.Redis.UseTLS` | `false` | Enable TLS/SSL connection |
 
@@ -279,10 +281,13 @@ All fields are optional. When not set, actual server values are used.
 ```json
 {
   "Enabled": true,
-  "LegacyProtocolEnabled": false,
+  "LegacyProtocolEnabled": true,
   "ServerInfo": {
     "ServerName": "My Network",
-    "Host": "play.mynetwork.com"
+    "Motd": "Welcome to our server!",
+    "Host": "play.mynetwork.com",
+    "Port": 5520,
+    "MaxPlayers": 1000
   },
   "Authentication": {
     "Public": {
@@ -305,8 +310,16 @@ All fields are optional. When not set, actual server values are used.
       "Type": "redis",
       "Redis": {
         "Host": "redis.mynetwork.com",
-        "Port": 6379
+        "Port": 6379,
+        "Username": "default",
+        "Password": "secret",
+        "Database": 0,
+        "UseTLS": false
       }
+    },
+    "Timing": {
+      "HeartbeatIntervalSeconds": 15,
+      "CacheRefreshSeconds": 60
     }
   },
   "ServerList": {

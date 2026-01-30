@@ -209,6 +209,8 @@ public class NetworkConfig {
                         (o, v) -> o.host = v, o -> o.host)
                 .addField(new KeyedCodec<>("Port", Codec.INTEGER),
                         (o, v) -> o.port = v, o -> o.port)
+                .addField(new KeyedCodec<>("Username", Codec.STRING),
+                        (o, v) -> o.username = v, o -> o.username)
                 .addField(new KeyedCodec<>("Password", Codec.STRING),
                         (o, v) -> o.password = v, o -> o.password)
                 .addField(new KeyedCodec<>("Database", Codec.INTEGER),
@@ -219,6 +221,7 @@ public class NetworkConfig {
 
         private String host = "localhost";
         private int port = 6379;
+        private String username = null;
         private String password = null;
         private int database = 0;
         private boolean useTLS = false;
@@ -241,6 +244,15 @@ public class NetworkConfig {
 
         public void setPort(int port) {
             this.port = port;
+        }
+
+        @Nullable
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(@Nullable String username) {
+            this.username = username;
         }
 
         @Nullable
@@ -275,7 +287,9 @@ public class NetworkConfig {
         public String toRedisUri() {
             StringBuilder sb = new StringBuilder();
             sb.append(useTLS ? "rediss://" : "redis://");
-            if (password != null && !password.isEmpty()) {
+            if (username != null && !username.isEmpty() && password != null && !password.isEmpty()) {
+                sb.append(username).append(":").append(password).append("@");
+            } else if (password != null && !password.isEmpty()) {
                 sb.append(":").append(password).append("@");
             }
             sb.append(host).append(":").append(port);
