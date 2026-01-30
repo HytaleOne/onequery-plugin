@@ -6,6 +6,7 @@ import com.hypixel.hytale.protocol.ProtocolSettings;
 import com.hypixel.hytale.server.core.HytaleServer;
 import com.hypixel.hytale.server.core.io.ServerManager;
 import com.hypixel.hytale.server.core.universe.Universe;
+import dev.hytaleone.query.config.ServerListConfig;
 import org.bson.Document;
 
 import javax.annotation.Nonnull;
@@ -22,19 +23,19 @@ import java.util.logging.Level;
 /**
  * Registers the server with a central server list service on startup.
  */
-public final class HytaleOneServerListRegistration {
+public final class ServerListRegistration {
 
     private static final String ENDPOINT = "https://hytale.one/api/plugin/query/register";
     private static final Duration TIMEOUT = Duration.ofSeconds(10);
 
-    private HytaleOneServerListRegistration() {
+    private ServerListRegistration() {
     }
 
     /**
      * Register the server with the server list service.
      * Runs asynchronously to not block server startup.
      */
-    public static void register(@Nonnull HytaleLogger logger, @Nonnull HytaleOneQueryConfig config, @Nonnull Runnable saveConfig) {
+    public static void register(@Nonnull HytaleLogger logger, @Nonnull ServerListConfig config, @Nonnull Runnable saveConfig) {
         // Generate server ID if missing
         if (config.getServerId() == null || config.getServerId().isBlank()) {
             String newId = "hytaleone_" + generateRandomHex(32);
@@ -151,6 +152,7 @@ public final class HytaleOneServerListRegistration {
 
         Document doc = new Document()
                 .append("serverId", serverId)
+                .append("pluginVersion", "v2")
                 .append("serverName", config.getServerName())
                 .append("motd", config.getMotd())
                 .append("host", getHostAddress())

@@ -1,7 +1,7 @@
 {
   "Group": "HytaleOne",
-  "Name": "Query",
-  "Version": "1.1.0",
+  "Name": "OneQuery",
+  "Version": "2.0.0",
   "Authors": [
     {
       "Name": "HytaleOne",
@@ -9,7 +9,7 @@
     }
   ],
   "Website": "https://hytale.one",
-  "Main": "dev.hytaleone.query.HytaleOneQueryPlugin",
+  "Main": "dev.hytaleone.query.OneQueryPlugin",
   "ServerVersion": "*",
-  "Description": "Lightweight UDP query protocol for server status"
+  "Description": "Lightweight UDP query protocol for server status. Supports multi-server networks with combined player counts and player lists."
 }
