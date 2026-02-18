@@ -3,6 +3,7 @@ package dev.hytaleone.query.config;
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
+import io.lettuce.core.RedisURI;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -283,6 +284,7 @@ public class NetworkConfig {
         /**
          * Build a Redis URI string for Lettuce.
          */
+        @Deprecated
         @Nonnull
         public String toRedisUri() {
             StringBuilder sb = new StringBuilder();
@@ -297,6 +299,26 @@ public class NetworkConfig {
                 sb.append("/").append(database);
             }
             return sb.toString();
+        }
+
+        /**
+         * Build a Redis URI for Lettuce connection.
+         */
+        @Nonnull
+        public RedisURI toRedisURI() {
+            RedisURI.Builder builder = RedisURI.builder()
+                    .withHost(getHost())
+                    .withPort(getPort())
+                    .withDatabase(getDatabase());
+            if (getUsername() != null && !getUsername().isEmpty()) {
+                builder.withAuthentication(getUsername(), getPassword() != null ? getPassword().toCharArray() : new char[0]);
+            } else if (getPassword() != null && !getPassword().isEmpty()) {
+                builder.withPassword(getPassword().toCharArray());
+            }
+            if (isUseTLS()) {
+                builder.withSsl(true);
+            }
+            return builder.build();
         }
     }
 
