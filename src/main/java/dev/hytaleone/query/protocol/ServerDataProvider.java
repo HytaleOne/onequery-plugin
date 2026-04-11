@@ -106,7 +106,7 @@ public final class ServerDataProvider {
 
     @Nonnull
     public static String getProtocolHash() {
-        return ProtocolSettings.PROTOCOL_HASH;
+        return String.format("%08X", ProtocolSettings.PROTOCOL_CRC);
     }
 
     @Nonnull
