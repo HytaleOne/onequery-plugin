@@ -29,11 +29,6 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Download HytaleServer
-        run: |
-          mkdir -p libs
-          curl -sfL -o libs/HytaleServer.jar "${{ secrets.HYTALE_SERVER_JAR_URL }}"
-
       - name: Build with Maven
         run: mvn clean package -B -DskipTests
 

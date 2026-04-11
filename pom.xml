@@ -14,15 +14,22 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <lettuce.version>6.3.2.RELEASE</lettuce.version>
+        <hytale.server.version>2026.03.26-89796e57b</hytale.server.version>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>hytale-release</id>
+            <url>https://maven.hytale.com/release</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
             <groupId>com.hypixel.hytale</groupId>
-            <artifactId>hytale-server</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/HytaleServer.jar</systemPath>
+            <artifactId>Server</artifactId>
+            <version>${hytale.server.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -42,6 +49,33 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>io.github.projectunified</groupId>
+                <artifactId>hytale-manifest-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generateManifest</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <main>dev.hytaleone.query.OneQueryPlugin</main>
+                    <group>HytaleOne</group>
+                    <name>OneQuery</name>
+                    <website>https://hytale.one</website>
+                    <description>Lightweight UDP query protocol for server status. Supports multi-server networks with combined player counts and player lists.</description>
+                    <serverVersion>${hytale.server.version}</serverVersion>
+                    <authors>
+                        <author>
+                            <name>HytaleOne</name>
+                            <url>https://hytale.one</url>
+                        </author>
+                    </authors>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
