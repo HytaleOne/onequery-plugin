@@ -1,9 +1,11 @@
 package dev.hytaleone.query;
 
+import com.hypixel.hytale.protocol.io.ServerListener;
 import com.hypixel.hytale.server.core.HytaleServer;
 import com.hypixel.hytale.server.core.event.events.player.PlayerConnectEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
 import com.hypixel.hytale.server.core.io.ServerManager;
+import com.hypixel.hytale.server.core.io.netty.NettyUtil;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.util.Config;
@@ -89,7 +91,13 @@ public class OneQueryPlugin extends JavaPlugin {
         );
 
         int registered = 0;
-        for (Channel channel : ServerManager.get().getListeners()) {
+        for (ServerListener listener : ServerManager.get().getListeners()) {
+            Channel channel = getListenerChannel(listener);
+            if (channel == null) {
+                getLogger().at(Level.WARNING).log("Cannot register query handler on non-Netty listener %s", listener.localAddress());
+                continue;
+            }
+
             try {
                 ChannelPipeline pipeline = channel.pipeline();
                 pipeline.addFirst(HANDLER_NAME, queryHandler);
@@ -119,7 +127,12 @@ public class OneQueryPlugin extends JavaPlugin {
         }
 
         int removed = 0;
-        for (Channel channel : ServerManager.get().getListeners()) {
+        for (ServerListener listener : ServerManager.get().getListeners()) {
+            Channel channel = getListenerChannel(listener);
+            if (channel == null) {
+                continue;
+            }
+
             try {
                 ChannelPipeline pipeline = channel.pipeline();
                 if (pipeline.get(HANDLER_NAME) != null) {
@@ -133,6 +146,14 @@ public class OneQueryPlugin extends JavaPlugin {
 
         getLogger().at(Level.INFO).log("Query protocol disabled, removed from %d listener(s)", removed);
         this.queryHandler = null;
+    }
+
+    @Nullable
+    private Channel getListenerChannel(@Nonnull ServerListener listener) {
+        if (listener instanceof NettyUtil.NettyChannelServerListener nettyListener) {
+            return nettyListener.channel();
+        }
+        return null;
     }
 
     private void migrateConfigIfNeeded() {

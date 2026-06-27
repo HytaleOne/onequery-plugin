@@ -14,7 +14,7 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <lettuce.version>6.3.2.RELEASE</lettuce.version>
-        <hytale.server.version>2026.03.26-89796e57b</hytale.server.version>
+        <hytale.server.version>0.5.6</hytale.server.version>
     </properties>
 
     <repositories>
@@ -66,7 +66,7 @@
                     <name>OneQuery</name>
                     <website>https://hytale.one</website>
                     <description>Lightweight UDP query protocol for server status. Supports multi-server networks with combined player counts and player lists.</description>
-                    <serverVersion>${hytale.server.version}</serverVersion>
+                    <serverVersion>=${hytale.server.version}</serverVersion>
                     <authors>
                         <author>
                             <name>HytaleOne</name>

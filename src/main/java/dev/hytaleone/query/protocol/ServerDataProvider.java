@@ -62,7 +62,7 @@ public final class ServerDataProvider {
 
     @Nonnull
     public static List<PlayerRef> getPlayers() {
-        return Universe.get().getPlayers();
+        return List.copyOf(Universe.get().getPlayers());
     }
 
     @Nonnull
