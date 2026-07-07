@@ -143,6 +143,8 @@ Offset  Size     Field
 ...     2        Port (uint16) - only if FLAG_HAS_ADDRESS
 ```
 
+> **Protocol Hash**: opaque identifier of the Hytale server's wire protocol, used by clients to detect protocol mismatch. Treat as an opaque string; do not parse. Since Hytale Update 4 (2026-03-26) this is an 8-character uppercase hex encoding of `ProtocolSettings.PROTOCOL_CRC` (CRC32). Earlier servers provided a different hash string. The field name is retained for wire compatibility.
+
 ### Player List (Type 0x0002)
 
 Returned for PLAYERS queries.
