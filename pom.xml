@@ -10,8 +10,7 @@
 
     <properties>
         <revision>2.0.2-SNAPSHOT</revision>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.release>25</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <lettuce.version>6.3.2.RELEASE</lettuce.version>
         <hytale.server.version>0.5.6</hytale.server.version>
@@ -85,7 +84,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.5.2</version>
+                <version>3.6.2</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
