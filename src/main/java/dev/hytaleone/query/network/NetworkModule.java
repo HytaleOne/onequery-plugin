@@ -11,6 +11,7 @@ import dev.hytaleone.query.network.model.ServerState;
 import dev.hytaleone.query.network.store.NetworkStateStore;
 import dev.hytaleone.query.network.store.RedisStateStore;
 import dev.hytaleone.query.protocol.ServerDataProvider;
+import io.lettuce.core.RedisURI;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -235,7 +236,7 @@ public class NetworkModule {
         if (!config.getStore().isRedis()) {
             throw new IllegalStateException("Network mode requires Redis configuration. Set Store.Type to 'redis' and configure Redis connection.");
         }
-        String redisUri = config.getStore().getRedis().toRedisUri();
+        RedisURI redisUri = config.getStore().getRedis().toRedisURI();
         return new RedisStateStore(
                 logger,
                 config.getNetworkId(),
