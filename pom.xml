@@ -13,7 +13,7 @@
         <maven.compiler.release>25</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <lettuce.version>6.3.2.RELEASE</lettuce.version>
-        <hytale.server.version>0.5.9</hytale.server.version>
+        <hytale.server.version>0.6.0</hytale.server.version>
     </properties>
 
     <repositories>
