@@ -10,14 +10,7 @@ import dev.hytaleone.query.network.model.NetworkEvent;
 import dev.hytaleone.query.network.model.NetworkSnapshot;
 import dev.hytaleone.query.network.model.PlayerInfo;
 import dev.hytaleone.query.network.model.ServerState;
-import io.lettuce.core.ClientOptions;
-import io.lettuce.core.RedisClient;
-import io.lettuce.core.RedisCommandExecutionException;
-import io.lettuce.core.ScriptOutputType;
-import io.lettuce.core.SocketOptions;
-import io.lettuce.core.StreamMessage;
-import io.lettuce.core.TimeoutOptions;
-import io.lettuce.core.XReadArgs;
+import io.lettuce.core.*;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.async.RedisAsyncCommands;
 import io.lettuce.core.resource.ClientResources;
@@ -223,6 +216,22 @@ public class RedisStateStore implements NetworkStateStore {
         this.networkId = networkId;
         this.serverId = serverId;
         this.redisUri = redisUri;
+        this.timing = timing;
+        this.subscribe = subscribe;
+        this.cache = new LocalStateCache();
+        this.cache.setServerTimeout(NetworkModule.SERVER_TIMEOUT_MILLIS);
+    }
+
+    public RedisStateStore(@Nonnull HytaleLogger logger,
+                           @Nonnull String networkId,
+                           @Nonnull String serverId,
+                           @Nonnull RedisURI redisUri,
+                           @Nonnull NetworkConfig.TimingConfig timing,
+                           boolean subscribe) {
+        this.logger = logger;
+        this.networkId = networkId;
+        this.serverId = serverId;
+        this.redisUri = redisUri.toURI().toString();
         this.timing = timing;
         this.subscribe = subscribe;
         this.cache = new LocalStateCache();
